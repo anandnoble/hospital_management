@@ -13,4 +13,8 @@ Owned by **Agent 2** (`agent/hospital` branch).
 - **Dev Server:** `npm run dev`
 - **Build Web Assets & Sync to Android:** `npm run cap:sync`
 - **Open in Android Studio:** `npm run cap:open` (or `npx cap open android`)
+- **Build Debug APK via CLI:**
+  1. Ensure Android SDK is installed via Android Studio or command-line tools.
+  2. In `hospital-app/android`: `.\gradlew.bat assembleDebug`
+  3. The compiled APK will be generated at `hospital-app/android/app/build/outputs/apk/debug/app-debug.apk`.
 
