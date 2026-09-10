@@ -17,12 +17,12 @@ INSERT INTO public.medical_documents (id, patient_id, document_name, file_path, 
 
 -- 4. Insert Hospitals (Rajahmundry locations)
 INSERT INTO public.hospitals (id, name, address, latitude, longitude, phone, available_icu_beds) VALUES
-('h1111111-1111-1111-1111-111111111111', 'City General Emergency Hospital', 'Main Road, Rajahmundry', 17.0005, 81.7800, '+918832441122', 4),
-('h2222222-2222-2222-2222-222222222222', 'Apollo Speciality ER', 'Danavaipeta, Rajahmundry', 17.0080, 81.7850, '+918832449988', 2);
+('c1111111-1111-1111-1111-111111111111', 'City General Emergency Hospital', 'Main Road, Rajahmundry', 17.0005, 81.7800, '+918832441122', 4),
+('c2222222-2222-2222-2222-222222222222', 'Apollo Speciality ER', 'Danavaipeta, Rajahmundry', 17.0080, 81.7850, '+918832449988', 2);
 
 -- 5. Insert Hospital Staff
 INSERT INTO public.hospital_staff (id, user_id, hospital_id, is_on_duty) VALUES
-('e1111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222222', 'h1111111-1111-1111-1111-111111111111', true);
+('e1111111-1111-1111-1111-111111111111', '22222222-2222-2222-2222-222222222222', 'c1111111-1111-1111-1111-111111111111', true);
 
 -- 6. Insert Ambulances
 INSERT INTO public.ambulances (id, vehicle_number, status, current_latitude, current_longitude) VALUES
