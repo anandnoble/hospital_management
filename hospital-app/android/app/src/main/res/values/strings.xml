@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Hospital Staff App</string>
+    <string name="title_activity_main">Hospital Staff App</string>
+    <string name="package_name">com.healthcare.hospitalapp</string>
+    <string name="custom_url_scheme">com.healthcare.hospitalapp</string>
+</resources>

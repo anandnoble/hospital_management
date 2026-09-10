@@ -9,5 +9,8 @@ Owned by **Agent 2** (`agent/hospital` branch).
 - Authorized patient vitals & medical document view
 - Ambulance arrival ETA & live tracking map
 
-## Architecture Notes:
-Refer to [API_CONTRACTS.md](file:///d:/hospita%20management%20system/API_CONTRACTS.md) for backend endpoints.
+## Running & Building on Android:
+- **Dev Server:** `npm run dev`
+- **Build Web Assets & Sync to Android:** `npm run cap:sync`
+- **Open in Android Studio:** `npm run cap:open` (or `npx cap open android`)
+

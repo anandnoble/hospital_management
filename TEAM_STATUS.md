@@ -33,4 +33,6 @@ Last Updated: 2026-09-10 (Agent 2 Hospital App Milestone M2 Completed)
   - Authorized Patient Medical Summary, AI Chat Assessment transcript history, and Document Viewer modal (`PatientDetailsModal.tsx`).
   - Interactive Leaflet Live Inbound Ambulance Map Radar & ETA calculator (`LiveTrackingMap.tsx`).
   - ICU Bed Inventory counter with real-time controls.
+  - Native Android Capacitor integration initialized with Gradle wrapper sync (`hospital-app/android/`).
+
 
