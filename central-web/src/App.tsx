@@ -4,10 +4,11 @@ import { EmergencyDashboard } from './components/EmergencyDashboard';
 import { LiveTrackingMap } from './components/LiveTrackingMap';
 import { EmergencyTimeline } from './components/EmergencyTimeline';
 import { AIConversationView } from './components/AIConversationView';
-import { EmergencyRequest, AIMessage, EMERGENCY_STATUS_ORDER } from '@shared';
+import { EmergencySimulator } from './components/EmergencySimulator';
+import { EmergencyRequest, AIMessage, EmergencyStatus, EMERGENCY_STATUS_ORDER } from '@shared';
 
-// Mock initial dataset for Hackathon demo
-const MOCK_EMERGENCIES: EmergencyRequest[] = [
+// Initial dataset for Hackathon demo
+const INITIAL_EMERGENCIES: EmergencyRequest[] = [
   {
     id: 'emg-1024',
     patient_id: 'a1111111-1111-1111-1111-111111111111',
@@ -94,8 +95,8 @@ const INITIAL_AI_MESSAGES: AIMessage[] = [
 ];
 
 export function App() {
-  const [emergencies, setEmergencies] = useState<EmergencyRequest[]>(MOCK_EMERGENCIES);
-  const [selectedEmergency, setSelectedEmergency] = useState<EmergencyRequest>(MOCK_EMERGENCIES[0]);
+  const [emergencies, setEmergencies] = useState<EmergencyRequest[]>(INITIAL_EMERGENCIES);
+  const [selectedEmergency, setSelectedEmergency] = useState<EmergencyRequest>(INITIAL_EMERGENCIES[0]);
   const [aiMessages, setAiMessages] = useState<AIMessage[]>(INITIAL_AI_MESSAGES);
 
   const handleSimulateNextStep = () => {
@@ -103,15 +104,71 @@ export function App() {
     const currentIndex = EMERGENCY_STATUS_ORDER.indexOf(selectedEmergency.status);
     const nextIndex = (currentIndex + 1) % EMERGENCY_STATUS_ORDER.length;
     const nextStatus = EMERGENCY_STATUS_ORDER[nextIndex];
+    handleUpdateStatus(nextStatus);
+  };
 
+  const handleUpdateStatus = (newStatus: EmergencyStatus) => {
+    if (!selectedEmergency) return;
     const updated = {
       ...selectedEmergency,
-      status: nextStatus,
+      status: newStatus,
       updated_at: new Date().toISOString(),
     };
-
     setSelectedEmergency(updated);
     setEmergencies((prev) => prev.map((e) => (e.id === updated.id ? updated : e)));
+  };
+
+  const handleCreateNewEmergency = (complaint: string) => {
+    const newEmg: EmergencyRequest = {
+      id: `emg-${Date.now().toString().slice(-4)}`,
+      patient_id: 'a1111111-1111-1111-1111-111111111111',
+      chief_complaint: complaint,
+      input_type: 'text',
+      status: 'REQUESTED',
+      patient_latitude: 17.0005,
+      patient_longitude: 81.7800,
+      patient_address: 'Rajahmundry Main Road',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      patient_profile: {
+        id: 'p-1',
+        user_id: 'u-1',
+        full_name: 'Rahul Sharma',
+        age: 54,
+        gender: 'Male',
+        phone: '+919876543210',
+        blood_group: 'O+',
+        created_at: new Date().toISOString(),
+      },
+      hospital: {
+        id: 'h-1',
+        name: 'City General Emergency Hospital',
+        address: 'Main Road, Rajahmundry',
+        latitude: 17.0080,
+        longitude: 81.7850,
+        phone: '+918832441122',
+        available_icui_beds: 4,
+        is_active: true,
+      },
+      ambulance: {
+        id: 'amb-1',
+        vehicle_number: 'AP 05 AB 1234',
+        driver_name: 'Suresh Kumar',
+        driver_phone: '+919876543212',
+        current_latitude: 17.0030,
+        current_longitude: 81.7820,
+        status: 'AVAILABLE',
+      },
+    };
+
+    setEmergencies((prev) => [newEmg, ...prev]);
+    setSelectedEmergency(newEmg);
+  };
+
+  const handleResetDemo = () => {
+    setEmergencies(INITIAL_EMERGENCIES);
+    setSelectedEmergency(INITIAL_EMERGENCIES[0]);
+    setAiMessages(INITIAL_AI_MESSAGES);
   };
 
   const handleSendMessage = (text: string) => {
@@ -161,7 +218,17 @@ export function App() {
       </header>
 
       {/* Main Dashboard Grid */}
-      <main className="dashboard-grid">
+      <main className="dashboard-grid" style={{ gridTemplateRows: 'auto 1fr' }}>
+        {/* Top Control Simulator Banner */}
+        <div style={{ gridColumn: '1 / -1' }}>
+          <EmergencySimulator
+            currentEmergency={selectedEmergency}
+            onUpdateStatus={handleUpdateStatus}
+            onResetDemo={handleResetDemo}
+            onCreateNewEmergency={handleCreateNewEmergency}
+          />
+        </div>
+
         {/* Left Panel: Active Emergencies */}
         <EmergencyDashboard
           emergencies={emergencies}
@@ -170,7 +237,7 @@ export function App() {
           onSimulateNextStep={handleSimulateNextStep}
         />
 
-        {/* Middle Panel: Live GPS Map Radar */}
+        {/* Middle Panel: Live GPS Map Radar & AI Feed */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', height: '100%' }}>
           <div style={{ flex: 1 }}>
             <LiveTrackingMap emergency={selectedEmergency} />
